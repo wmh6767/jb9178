@@ -1900,7 +1900,14 @@
             const tier = slotSkill.阶位 || treeSkill.阶位 || '基础';
             const tierCD = getSkillCooldownByTier(tier, statData);
             if (tierCD <= 0) {
-                
+                // 基础/转职：无冷却，立即恢复
+                slotSkill.冷却中 = false;
+                treeSkill.冷却计数 = 0;
+                console.log(`[冷却系统] 技能「${name}」阶位=${tier}，无冷却，立即恢复`);
+            } else {
+                treeSkill.冷却计数 = tierCD;
+                console.log(`[冷却系统] 技能「${name}」进入冷却，阶位=${tier}，等待轮数=${tierCD}`);
+            }
         }
 
         // 4. 冷却计数归零 → 恢复可用
